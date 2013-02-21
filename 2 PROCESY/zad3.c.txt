@@ -1,0 +1,49 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <process.h>
+#include <unistd.h>
+
+
+int main(int argc, char *argv[]) {
+	//W argc jest liczba argumentów przekazana do programu, argv to tablica
+	//o d³ugoœci (argc + 1) przechowuj¹ca te argumenty
+
+	int l ;
+	for(l = 0 ; l < argc; l++){
+	    printf("argv[%d] = %c",l ,*argv[l] );
+	}
+
+        int status;
+        int iloscProc = argc - 2;
+        int licznik = 0;
+        int j;
+        int pid = 1;
+        int i;
+
+        //printf("%d", iloscProc );
+        for ( ; licznik < iloscProc && pid != 0; ++licznik ){
+                j = licznik + 1;
+                //Funkcja fork() tworzy proces potomny bêd¹cy kopi¹ procesu macierzystego
+                pid = fork();
+        }
+        if ( pid == 0 ){        //potomny
+
+                for ( i = 0; i < atoi( argv[ j + 1 ] ); ++i ){
+                        printf ( "Proces nr. %d o pid %d krok %d\n", j, getpid(), i + 1 );
+                        sleep( 1 );
+                }
+                exit( j );
+        }
+        else{   //macierzysty
+                for ( i = 0; i < atoi( argv[ 1 ]); ++i ){
+                        printf ( "Proces macierzysty nr. %d o pid %d krok %d\n", 0, getpid(), i + 1 );
+                        sleep(1);
+                }
+                for ( i = 0; i < iloscProc; ++i ){
+                        pid = wait( &status );
+                        printf( "Pid dziecka zakonczonego %d, kod jego powrotu %d\n", pid, status );
+                }
+        }
+        return EXIT_SUCCESS;
+}

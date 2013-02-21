@@ -1,0 +1,11 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+	//printf("Welcome to the QNX Momentics IDE\n");
+	printf("Identyfikator procesu PID: %d\n",getpid());
+	printf("Identyfikator procesu macierzystego PPID %d\n",getppid());
+	printf("Numer grupy procesow PGID %d\n",getpgrp());
+
+	return EXIT_SUCCESS;
+}

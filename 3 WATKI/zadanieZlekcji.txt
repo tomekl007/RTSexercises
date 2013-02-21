@@ -1,0 +1,81 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <time.h>
+
+
+pthread_t tid[7];        //Tablica z numerami TID wykladow
+time_t czasyWatkow[7];
+
+int main(int argc, char *argv[]) {
+
+	char odp = 't';
+	int counter = 0;
+
+    int czasWzgledny = 0;
+    int czasBezwzgledny = 0;
+
+
+
+
+	while(1){
+
+
+		printf("czy chcesz utworzyc nowy watek ? [t/n]");
+		//scanf("%c", odp);
+		odp = getchar();
+
+		if( odp == 't'){
+
+			//printf("cos");
+			printf("za jaki czas watek ma sie zakonczyc[w sekundach]:  ");
+			scanf("%d", &czasWzgledny);
+			//printf("%d",czasWzgledny);
+			//time_t temp = czasWzgledny + 24 * 60 * 60;
+
+			time_t time_of_day;
+
+		    time_of_day = time( NULL );
+		    printf("%s", &time_of_day);
+
+			//printf( "It is now: %s", ctime( &time_of_day ) );
+
+
+            czasBezwzgledny = time_of_day + czasWzgledny;
+
+
+            pthread_attr_t attr;
+            struct sched_param par;
+
+            pthread_attr_init(&attr);
+            par.sched_priority = 1;
+            pthread_attr_setdetachstate( &attr, PTHREAD_CREATE_DETACHED );
+
+           // setschedparam(0, 1, *par);
+
+			pthread_create(&tid[counter], &attr, NULL, NULL );
+
+			pthread_setschedparam(tid[counter], 1, &par);
+
+			//pthread_create();
+
+		    pthread_attr_destroy(&attr);
+
+			counter++;
+
+
+
+			//time + czas podany daje termin bezwzgledy
+			//utwroz watek
+
+		}
+		else{
+			break;
+		}
+
+
+
+
+	}
+	return EXIT_SUCCESS;
+}

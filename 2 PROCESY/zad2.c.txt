@@ -1,0 +1,17 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/wait.h>
+
+int main( void )
+  {
+    int rc;
+
+    rc = system( "ls" );
+    if( rc == -1 ) {
+      printf( "shell could not be run\n" );
+    } else {
+      printf( "result of running command is %d\n",
+          WEXITSTATUS( rc ) );
+    }
+    return EXIT_SUCCESS;
+  }
